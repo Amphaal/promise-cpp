@@ -112,8 +112,8 @@ inline void destroy_node(pm_list *node) {
 
 template <size_t SIZE>
 struct pm_size_allocator {
+    static inline std::unique_ptr<pm_memory_pool> pool_;
     static inline pm_memory_pool *get_memory_pool() {
-        thread_local static std::unique_ptr<pm_memory_pool> pool_;
         if(pool_ == nullptr)
             pool_.reset(pm_stack_new<pm_memory_pool>(SIZE));
         return pool_.get();
@@ -188,7 +188,7 @@ private:
 #endif
             ++header->ref_count_;
 
-            //Check if ref_count_ must overflow£¡
+            //Check if ref_count_ must overflowÂ£Â¡
             if (header->ref_count_ <= 0) {
                 pm_throw("ref_count_ overflow");
             }
